@@ -21,8 +21,10 @@ irfBand(
 
 \item{smat}{With \code{postdraw} (from \code{\link[=rfvar]{rfvar()}} output, if NULL), the transpose of
 \code{pdout$smat[ , , draw]} is used as initial shocks.  Otherwise,
-this array is used, not transposed. With SVAR output, the inverse
-of \code{A0} is used as initial shocks when \code{smat} is NULL.  \code{smat}
+this array is used, not transposed, and so must have variables
+in its rows and shocks in its columns, as \code{\link[=impulsdtrf]{impulsdtrf()}}
+requires. With SVAR output, the inverse of \code{A0} is used as
+initial shocks when \code{smat} is NULL.  \code{smat}
 Can be a single matrix, used repeatedly.}
 
 \item{nstep}{Number of steps ahead to calculate responses.}

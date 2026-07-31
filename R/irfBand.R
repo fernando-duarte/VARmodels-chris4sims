@@ -10,8 +10,10 @@
 #' @param pdout  Output from [postdraw`()] or [SVARpostdraw()].
 #' @param smat With `postdraw` (from [rfvar()] output, if NULL), the transpose of
 #'             `pdout$smat[ , , draw]` is used as initial shocks.  Otherwise,
-#'              this array is used, not transposed. With SVAR output, the inverse
-#'              of `A0` is used as initial shocks when `smat` is NULL.  `smat`
+#'              this array is used, not transposed, and so must have variables
+#'              in its rows and shocks in its columns, as [impulsdtrf()]
+#'              requires. With SVAR output, the inverse of `A0` is used as
+#'              initial shocks when `smat` is NULL.  `smat`
 #'              Can be a single matrix, used repeatedly.
 #' @param nstep Number of steps ahead to calculate responses.
 #' @param order If non-null, use triangular orthogonalization with this ordering of shocks.
@@ -56,7 +58,8 @@ irfBand <- function(pdout,
                     for (id in 1:ndraw) smat[ , , id] <-
                                             pchol(crossprod(smat[ , , id]), order)
                 }
-                dimnames(smat) <- list(dimnames(pdout$By)[[1]], NULL, NULL)
+                smat <- aperm(smat, c(2,1,3)) #transposing, after any reordering
+                dimnames(smat) <- list(NULL, dimnames(pdout$By)[[1]], NULL)
             }    
         }
     }
